@@ -3,40 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MemoryCards - 记忆卡片游戏</title>
+    <title>MemoryCards - 记忆卡片挑战</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
             max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px 30px;
             text-align: center;
-            background-color: #f5f5f5;
-            color: #333;
+            position: relative;
+            overflow: hidden;
         }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            animation: shine 8s infinite linear;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(30deg) translate(-10%, -10%); }
+            100% { transform: rotate(30deg) translate(10%, 10%); }
+        }
+        
         h1 {
-            color: #2c3e50;
-            font-size: 2.5em;
+            font-size: 3rem;
+            font-weight: 700;
             margin-bottom: 10px;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            animation: fadeIn 1s ease-out;
         }
-        .game-intro {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            animation: fadeIn 1s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+        
+        .content {
+            padding: 40px;
+            position: relative;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideUp 0.8s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent), var(--success));
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .feature {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature i {
+            margin-right: 5px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, var(--accent), var(--success));
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
             margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(72, 149, 239, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            animation: fadeIn 1s ease-out 0.6s forwards;
+            opacity: 0;
         }
-        .game-name {
-            font-weight: bold;
-            color: #e74c3c;
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(72, 149, 239, 0.6);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .game-card {
+                padding: 25px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>MemoryCards</h1>
-    <div class="game-intro">
-        <p><span class="game-name">MemoryCards</span> 是一款记忆训练游戏，玩家需要在有限的时间内记住卡片的位置，并匹配出相同的卡片对。</p>
-        <p>游戏规则简单但富有挑战性，能够锻炼您的记忆力和观察力！</p>
+    <div class="container">
+        <div class="header">
+            <h1>MemoryCards</h1>
+            <p class="tagline">挑战你的记忆力极限</p>
+        </div>
+        
+        <div class="content">
+            <div class="game-card">
+                <h2>关于游戏</h2>
+                <p><span class="highlight">MemoryCards</span> 是一款刺激的记忆力挑战游戏，玩家需要在<span class="highlight">有限的时间</span>内记住卡片的位置，并找出所有<span class="highlight">匹配的卡片对</span>。</p>
+                <p>随着关卡推进，卡片数量会增加，时间限制也会缩短，考验你的<span class="highlight">短期记忆能力</span>和<span class="highlight">反应速度</span>。</p>
+                
+                <div class="features">
+                    <div class="feature">⏱️ 时间挑战</div>
+                    <div class="feature">🧠 记忆力训练</div>
+                    <div class="feature">🎮 简单易上手</div>
+                    <div class="feature">📈 多难度关卡</div>
+                </div>
+            </div>
+            
+            <button class="cta-button">立即开始游戏</button>
+        </div>
     </div>
 </body>
 </html>
